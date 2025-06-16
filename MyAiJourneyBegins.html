@@ -6,15 +6,19 @@
     <title>My AI Journey Begins!</title>
     <!-- Tailwind CSS CDN for basic styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Titan One -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Titan+One&display=swap"
+      rel="stylesheet"
+    />
     <style>
       body {
-        font-family: "Inter", sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        font-family: "Titan One", "Quicksand", "Inter", sans-serif;
+        display: block;
         min-height: 100vh;
         margin: 0;
-        background-image: url("https://images.unsplash.com/photo-1490750967868-88aa4486c946?q=80&w=1920&auto=format&fit=crop");
+        /* Dreamy, painterly cloud/sky background reminiscent of Miyazaki */
+        background-image: url("https://i.imgur.com/ccvIMGK.jpeg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -30,29 +34,37 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.3);
+        background: rgba(0, 0, 0, 0.1);
         z-index: 1;
       }
 
       h1 {
-        color: #ffffff;
-        font-size: 8rem;
-        text-align: center;
-        font-weight: bold;
+        color: #fff;
+        font-family: "Titan One", "Quicksand", "Inter", sans-serif;
+        font-size: 2.8rem !important;
         text-transform: uppercase;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        background: none;
+        text-shadow: 0 2px 16px rgba(0, 0, 0, 0.18),
+          0 1px 2px rgba(0, 0, 0, 0.1);
+        border-radius: 32px;
+        padding: 24px 36px 20px 36px;
         position: relative;
         z-index: 2;
         opacity: 0;
         transform: translateY(20px);
         animation: fadeInUp 1s ease forwards;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 2, 0.6, 1);
+        margin-top: 120px;
       }
 
       h1:hover {
-        transform: scale(1.05);
-        text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        transform: scale(1.09);
+        box-shadow: 0 0 32px 0 #a1c4fd66, 0 1.5px 8px 0 #c2e9fb44;
+        background: rgba(255, 255, 255, 0.95);
       }
 
       @keyframes fadeInUp {
@@ -78,9 +90,1214 @@
           background-position: 0% 50%;
         }
       }
+
+      .ttt-title {
+        color: #ffd54f;
+        text-shadow: 1px 1px 4px #222;
+        font-family: "Inter", sans-serif;
+      }
+
+      .battleship-ship-revealed {
+        background: #ffd54f !important;
+        color: #222 !important;
+      }
+
+      #battleship-container {
+        left: unset !important;
+      }
+
+      #battleship-player-board,
+      #battleship-ai-board {
+        display: grid;
+        grid-template-columns: repeat(4, 32px);
+        grid-template-rows: repeat(4, 32px);
+        gap: 4px;
+        margin-bottom: 8px;
+        justify-content: center;
+      }
+      .battleship-cell {
+        width: 32px;
+        height: 32px;
+        background: #fff;
+        color: #222;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        cursor: pointer;
+        user-select: none;
+        transition: background 0.2s, color 0.2s;
+      }
+      .connect4-title,
+      .hl-title {
+        color: #ffd54f;
+        text-shadow: 2px 4px 8px #222, 0 1px 0 #222;
+        font-family: "Inter", sans-serif;
+        font-weight: bold;
+        font-size: 1.2rem; /* Smaller so it fits on one line */
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        text-align: center;
+        margin-bottom: 8px;
+      }
     </style>
   </head>
   <body>
-    <h1>Welcome to My AI Journey!</h1>
+    <h1>WELCOME</h1>
+    <div id="connect4-container" style="display: none">
+      <div
+        class="connect4-title"
+        style="
+          font-size: 1.2rem;
+          font-weight: bold;
+          margin-bottom: 6px;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          color: #ffd54f;
+        "
+      >
+        CONNECT 4
+      </div>
+      <div
+        id="connect4-mode-select-row"
+        style="
+          margin-bottom: 10px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        "
+      >
+        <div
+          style="
+            font-size: 0.95rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+          "
+        >
+          Mode
+        </div>
+        <div style="display: flex; gap: 10px">
+          <button
+            id="connect4-mode-2p"
+            style="
+              font-size: 0.95rem;
+              border-radius: 4px;
+              padding: 4px 16px;
+              border: none;
+              background: #fff;
+              color: #222;
+              font-weight: bold;
+              cursor: pointer;
+              transition: background 0.2s;
+            "
+          >
+            2 PLAYER
+          </button>
+          <button
+            id="connect4-mode-ai"
+            style="
+              font-size: 0.95rem;
+              border-radius: 4px;
+              padding: 4px 16px;
+              border: none;
+              background: #fff;
+              color: #222;
+              font-weight: bold;
+              cursor: pointer;
+              transition: background 0.2s;
+            "
+          >
+            VS AI
+          </button>
+        </div>
+      </div>
+      <div
+        id="connect4-board"
+        style="
+          display: grid;
+          grid-template-columns: repeat(7, 32px);
+          grid-template-rows: repeat(6, 32px);
+          gap: 4px;
+          justify-content: center;
+          margin-bottom: 8px;
+        "
+      ></div>
+      <div
+        id="connect4-status"
+        style="min-height: 20px; font-size: 0.95rem; margin-bottom: 4px"
+      ></div>
+      <button id="connect4-reset">Reset</button>
+    </div>
+    <div
+      id="battleship-container"
+      style="
+        display: none;
+        min-width: 270px;
+        max-width: 300px;
+        width: 280px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 18px 14px 14px 14px;
+        z-index: 100;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        color: #fff;
+        font-family: 'Inter', sans-serif;
+        text-align: center;
+      "
+    >
+      <div
+        class="battleship-title"
+        style="
+          font-size: 1.2rem;
+          font-weight: bold;
+          margin-bottom: 6px;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          color: #ffd54f;
+        "
+      >
+        BATTLESHIP
+      </div>
+      <div
+        id="battleship-status"
+        style="
+          min-height: 20px;
+          font-size: 0.95rem;
+          margin-bottom: 4px;
+          width: 240px;
+          max-width: 240px;
+          overflow-wrap: break-word;
+          text-align: center;
+        "
+      ></div>
+      <div
+        style="
+          display: flex;
+          gap: 16px;
+          justify-content: center;
+          align-items: flex-start;
+          flex-wrap: nowrap;
+          min-width: 240px;
+        "
+      >
+        <div>
+          <div style="font-size: 0.95rem; margin-bottom: 2px">You</div>
+          <div id="battleship-player-board"></div>
+        </div>
+        <div>
+          <div style="font-size: 0.95rem; margin-bottom: 2px">AI</div>
+          <div id="battleship-ai-board"></div>
+        </div>
+      </div>
+      <button id="battleship-reset" style="margin-top: 10px">Reset</button>
+    </div>
+    <div
+      id="higherlower-container"
+      style="
+        display: none;
+        background: transparent;
+        border-radius: 12px;
+        padding: 16px 12px 12px 12px;
+        z-index: 100;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        color: #fff;
+        font-family: 'Inter', sans-serif;
+        min-width: 320px;
+        max-width: 340px;
+        width: 340px;
+        text-align: center;
+      "
+    >
+      <div class="hl-title">HIGHER OR LOWER</div>
+      <div
+        id="hl-status"
+        style="
+          min-height: 48px;
+          max-height: 48px;
+          overflow-y: auto;
+          font-size: 0.95rem;
+          margin-bottom: 4px;
+        "
+      ></div>
+      <div
+        id="hl-hl-row"
+        style="
+          display: flex;
+          flex-direction: row;
+          align-items: stretch;
+          justify-content: center;
+          gap: 32px;
+          margin-bottom: 8px;
+        "
+      >
+        <div
+          id="hl-your-cards-col"
+          style="display: flex; flex-direction: column; align-items: center"
+        >
+          <div
+            id="hl-your-cards"
+            style="display: flex; flex-direction: column; align-items: center"
+          ></div>
+          <div
+            id="hl-player-life"
+            style="
+              font-size: 1.08rem;
+              color: #ffd54f;
+              display: flex;
+              align-items: center;
+              gap: 2px;
+              margin-top: 4px;
+            "
+          ></div>
+        </div>
+        <div
+          id="hl-guess-row"
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            align-self: stretch;
+            gap: 16px;
+            min-width: 90px;
+            margin-top: 18px;
+          "
+        ></div>
+        <div
+          id="hl-ai-cards-col"
+          style="display: flex; flex-direction: column; align-items: center"
+        >
+          <div
+            id="hl-opponent-cards"
+            style="display: flex; flex-direction: column; align-items: center"
+          ></div>
+          <div
+            id="hl-ai-life"
+            style="
+              font-size: 1.08rem;
+              color: #ffd54f;
+              display: flex;
+              align-items: center;
+              gap: 2px;
+              margin-top: 4px;
+            "
+          ></div>
+        </div>
+      </div>
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+          margin-top: 8px;
+        "
+      >
+        <button
+          id="hl-next-round"
+          style="
+            padding: 6px 14px;
+            font-size: 0.98rem;
+            border-radius: 7px;
+            border: none;
+            background: #fff;
+            color: #222;
+            font-weight: bold;
+            width: 200px;
+            text-transform: uppercase;
+            opacity: 0.7;
+            cursor: not-allowed;
+          "
+          disabled
+        >
+          NEXT ROUND
+        </button>
+        <button
+          id="hl-reset"
+          style="
+            padding: 6px 14px;
+            font-size: 0.98rem;
+            border-radius: 7px;
+            border: none;
+            background: #fff;
+            color: #222;
+            font-weight: bold;
+            width: 200px;
+            text-transform: uppercase;
+          "
+        >
+          RESET
+        </button>
+      </div>
+    </div>
+    <!-- GAMES Button and Game Selector Modal -->
+    <div
+      id="games-menu-container"
+      style="position: fixed; bottom: 24px; left: 24px; z-index: 200"
+    >
+      <button
+        id="games-menu-btn"
+        style="
+          padding: 10px 28px;
+          font-size: 1.1rem;
+          border-radius: 10px;
+          border: none;
+          background: #ffd54f;
+          color: #222;
+          font-weight: bold;
+          cursor: pointer;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+        "
+      >
+        GAMES
+      </button>
+      <div
+        id="games-selector"
+        style="
+          display: none;
+          margin-top: 10px;
+          background: #fff;
+          border-radius: 10px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+          padding: 12px 18px;
+        "
+      >
+        <div style="font-weight: bold; color: #222; margin-bottom: 8px">
+          Select a Game:
+        </div>
+        <button
+          class="game-select-btn"
+          data-game="battleship"
+          style="
+            display: block;
+            width: 100%;
+            margin-bottom: 6px;
+            padding: 8px 0;
+            border-radius: 7px;
+            border: none;
+            background: #ffd54f;
+            color: #222;
+            font-weight: bold;
+            cursor: pointer;
+          "
+        >
+          Battleship
+        </button>
+        <button
+          class="game-select-btn"
+          data-game="connect4"
+          style="
+            display: block;
+            width: 100%;
+            margin-bottom: 6px;
+            padding: 8px 0;
+            border-radius: 7px;
+            border: none;
+            background: #ffd54f;
+            color: #222;
+            font-weight: bold;
+            cursor: pointer;
+          "
+        >
+          Connect 4
+        </button>
+        <button
+          class="game-select-btn"
+          data-game="higherlower"
+          style="
+            display: block;
+            width: 100%;
+            padding: 8px 0;
+            border-radius: 7px;
+            border: none;
+            background: #ffd54f;
+            color: #222;
+            font-weight: bold;
+            cursor: pointer;
+          "
+        >
+          Higher or Lower
+        </button>
+      </div>
+    </div>
+    <script>
+      // Connect 4 logic will be implemented here
+
+      // --- Battleship PvC (Player vs Computer) ---
+      const playerBoardEl = document.getElementById("battleship-player-board");
+      const aiBoardEl = document.getElementById("battleship-ai-board");
+      const battleshipStatusEl = document.getElementById("battleship-status");
+      const battleshipResetBtn = document.getElementById("battleship-reset");
+      const GRID_SIZE = 4;
+      const SHIP_COUNT = 3;
+      let playerShips = [];
+      let aiShips = [];
+      let playerGuesses = [];
+      let aiGuesses = [];
+      let playerHits = 0;
+      let aiHits = 0;
+      let placingShips = true;
+      let battleshipActive = true;
+      let currentPlayer = 1; // 1 or 2
+
+      function resetBattleship() {
+        playerShips = [];
+        aiShips = [];
+        playerGuesses = [];
+        aiGuesses = [];
+        playerHits = 0;
+        aiHits = 0;
+        placingShips = true;
+        battleshipActive = true;
+        placeAIShips();
+        battleshipStatusEl.textContent = "Place your 3 ships on the board";
+        renderBattleshipBoards();
+      }
+
+      function placeAIShips() {
+        aiShips = [];
+        while (aiShips.length < SHIP_COUNT) {
+          const pos = Math.floor(Math.random() * GRID_SIZE * GRID_SIZE);
+          if (!aiShips.includes(pos)) aiShips.push(pos);
+        }
+      }
+
+      function renderBattleshipBoards() {
+        // Player Board
+        playerBoardEl.innerHTML = "";
+        for (let i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
+          const cell = document.createElement("div");
+          cell.className = "battleship-cell";
+          if (playerShips.includes(i)) {
+            cell.classList.add("battleship-ship");
+            cell.textContent = "🚢";
+          }
+          if (aiGuesses.includes(i)) {
+            if (playerShips.includes(i)) {
+              cell.classList.add("battleship-hit");
+              cell.textContent = "💥";
+            } else {
+              cell.classList.add("battleship-miss");
+              cell.textContent = "✕";
+            }
+          }
+          if (
+            placingShips &&
+            playerShips.length < SHIP_COUNT &&
+            !playerShips.includes(i)
+          ) {
+            cell.onclick = () => handlePlayerPlaceShip(i);
+            cell.style.cursor = "pointer";
+          }
+          playerBoardEl.appendChild(cell);
+        }
+        // AI Board
+        aiBoardEl.innerHTML = "";
+        for (let i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
+          const cell = document.createElement("div");
+          cell.className = "battleship-cell";
+          if (playerGuesses.includes(i)) {
+            if (aiShips.includes(i)) {
+              cell.classList.add("battleship-hit");
+              cell.textContent = "💥";
+            } else {
+              cell.classList.add("battleship-miss");
+              cell.textContent = "✕";
+            }
+          } else if (
+            !battleshipActive &&
+            aiHits === SHIP_COUNT &&
+            aiShips.includes(i)
+          ) {
+            // Reveal unhit AI ships as yellow if player lost
+            cell.classList.add("battleship-ship-revealed");
+            cell.textContent = "🚢";
+          }
+          if (!placingShips && battleshipActive && !playerGuesses.includes(i)) {
+            cell.onclick = () => handlePlayerGuess(i);
+            cell.style.cursor = "pointer";
+          }
+          aiBoardEl.appendChild(cell);
+        }
+      }
+
+      function handlePlayerPlaceShip(idx) {
+        if (
+          !placingShips ||
+          playerShips.includes(idx) ||
+          playerShips.length >= SHIP_COUNT
+        )
+          return;
+        playerShips.push(idx);
+        if (playerShips.length === SHIP_COUNT) {
+          placingShips = false;
+          battleshipStatusEl.textContent =
+            "Your turn! Click the AI's board to guess.";
+        }
+        renderBattleshipBoards();
+      }
+
+      function handlePlayerGuess(idx) {
+        if (placingShips || playerGuesses.includes(idx) || !battleshipActive)
+          return;
+        playerGuesses.push(idx);
+        if (aiShips.includes(idx)) {
+          playerHits++;
+          battleshipStatusEl.textContent = `Hit! You have found ${playerHits}/${SHIP_COUNT} AI ships. Go again!`;
+          renderBattleshipBoards();
+          if (playerHits === SHIP_COUNT) {
+            battleshipStatusEl.textContent = "You win! You found all AI ships!";
+            battleshipActive = false;
+            renderBattleshipBoards();
+            return;
+          }
+          // Player gets another turn (do not call aiTurn)
+          return;
+        } else {
+          battleshipStatusEl.textContent = "Miss! Now AI will guess...";
+          renderBattleshipBoards();
+          if (battleshipActive) setTimeout(aiTurn, 700);
+        }
+      }
+
+      function aiTurn() {
+        // AI picks a random cell it hasn't guessed
+        let options = [];
+        for (let i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
+          if (!aiGuesses.includes(i)) options.push(i);
+        }
+        if (options.length === 0) return;
+        const guess = options[Math.floor(Math.random() * options.length)];
+        aiGuesses.push(guess);
+        if (playerShips.includes(guess)) {
+          aiHits++;
+          battleshipStatusEl.textContent = `AI hit your ship! AI has found ${aiHits}/${SHIP_COUNT} of your ships. AI goes again!`;
+          renderBattleshipBoards();
+          if (aiHits === SHIP_COUNT) {
+            battleshipStatusEl.textContent =
+              "AI wins! It found all your ships!";
+            battleshipActive = false;
+            renderBattleshipBoards();
+            return;
+          }
+          // AI gets another turn
+          if (battleshipActive) setTimeout(aiTurn, 700);
+        } else {
+          battleshipStatusEl.textContent = "AI missed! Your turn.";
+          renderBattleshipBoards();
+        }
+      }
+
+      battleshipResetBtn.onclick = resetBattleship;
+      // Initial Battleship render
+      resetBattleship();
+
+      // --- Connect 4 Game Logic with Mode Selector ---
+      const c4BoardEl = document.getElementById("connect4-board");
+      const c4StatusEl = document.getElementById("connect4-status");
+      const c4ResetBtn = document.getElementById("connect4-reset");
+      const c4Mode2PBtn = document.getElementById("connect4-mode-2p");
+      const c4ModeAIBtn = document.getElementById("connect4-mode-ai");
+      let c4Mode = "friend";
+      let c4Cols = 7,
+        c4Rows = 6;
+      let c4Board = [];
+      let c4Current = 1; // 1 = Player 1 (yellow), 2 = Player 2/AI (blue)
+      let c4Active = true;
+
+      function c4HighlightModeButtons(selected) {
+        if (selected === "friend") {
+          c4Mode2PBtn.style.background = "#ffd54f";
+          c4ModeAIBtn.style.background = "#fff";
+        } else if (selected === "ai") {
+          c4Mode2PBtn.style.background = "#fff";
+          c4ModeAIBtn.style.background = "#ffd54f";
+        } else {
+          c4Mode2PBtn.style.background = "#fff";
+          c4ModeAIBtn.style.background = "#fff";
+        }
+      }
+      c4Mode2PBtn.onclick = () => {
+        c4Mode = "friend";
+        c4Reset(false);
+        c4HighlightModeButtons("friend");
+      };
+      c4ModeAIBtn.onclick = () => {
+        c4Mode = "ai";
+        c4Reset(false);
+        c4HighlightModeButtons("ai");
+      };
+      c4HighlightModeButtons("friend");
+
+      function c4Reset(allowModeSelect = true) {
+        c4Board = Array.from({ length: c4Rows }, () => Array(c4Cols).fill(0));
+        c4Current = 1;
+        c4Active = true;
+        c4StatusEl.textContent =
+          c4Mode === "ai" ? "Your turn (Yellow)" : "Player 1's turn (Yellow)";
+        c4RenderBoard();
+        if (allowModeSelect) c4HighlightModeButtons();
+      }
+      c4ResetBtn.onclick = () => c4Reset(true);
+
+      function c4RenderBoard() {
+        c4BoardEl.innerHTML = "";
+        for (let r = 0; r < c4Rows; r++) {
+          for (let c = 0; c < c4Cols; c++) {
+            const cell = document.createElement("div");
+            cell.className = "connect4-cell";
+            if (c4Board[r][c] === 1) cell.classList.add("player1");
+            if (c4Board[r][c] === 2) cell.classList.add("player2");
+            cell.onclick = () => c4HandleMove(c);
+            c4BoardEl.appendChild(cell);
+          }
+        }
+      }
+
+      function c4HandleMove(col) {
+        if (!c4Active) return;
+        // Find the lowest empty row in this column
+        let row = c4Rows - 1;
+        while (row >= 0 && c4Board[row][col] !== 0) row--;
+        if (row < 0) return; // Column full
+        c4Board[row][col] = c4Current;
+        if (c4CheckWinner(row, col, c4Current)) {
+          c4StatusEl.textContent =
+            c4Mode === "ai"
+              ? c4Current === 1
+                ? "You win!"
+                : "AI wins!"
+              : `Player ${c4Current} wins!`;
+          c4Active = false;
+          c4RenderBoard();
+          return;
+        }
+        if (c4Board.flat().every((x) => x !== 0)) {
+          c4StatusEl.textContent = "It's a draw!";
+          c4Active = false;
+          c4RenderBoard();
+          return;
+        }
+        if (c4Mode === "ai" && c4Current === 1) {
+          c4Current = 2;
+          c4StatusEl.textContent = "AI's turn (Blue)";
+          c4RenderBoard();
+          setTimeout(c4AIMove, 500);
+        } else {
+          c4Current = c4Current === 1 ? 2 : 1;
+          c4StatusEl.textContent =
+            c4Mode === "ai"
+              ? c4Current === 1
+                ? "Your turn (Yellow)"
+                : "AI's turn (Blue)"
+              : `Player ${c4Current}'s turn (${
+                  c4Current === 1 ? "Yellow" : "Blue"
+                })`;
+          c4RenderBoard();
+        }
+      }
+
+      function c4AIMove() {
+        if (!c4Active) return;
+        // Greedy/blocking AI: try to win, else block, else random
+        let chosenCol = null;
+        // 1. Try to win
+        for (let c = 0; c < c4Cols; c++) {
+          let r = c4Rows - 1;
+          while (r >= 0 && c4Board[r][c] !== 0) r--;
+          if (r < 0) continue;
+          c4Board[r][c] = 2;
+          if (c4CheckWinner(r, c, 2)) {
+            chosenCol = c;
+          }
+          c4Board[r][c] = 0;
+          if (chosenCol !== null) break;
+        }
+        // 2. Try to block player
+        if (chosenCol === null) {
+          for (let c = 0; c < c4Cols; c++) {
+            let r = c4Rows - 1;
+            while (r >= 0 && c4Board[r][c] !== 0) r--;
+            if (r < 0) continue;
+            c4Board[r][c] = 1;
+            if (c4CheckWinner(r, c, 1)) {
+              chosenCol = c;
+            }
+            c4Board[r][c] = 0;
+            if (chosenCol !== null) break;
+          }
+        }
+        // 3. Otherwise, pick random valid column
+        if (chosenCol === null) {
+          let valid = [];
+          for (let c = 0; c < c4Cols; c++)
+            if (c4Board[0][c] === 0) valid.push(c);
+          chosenCol = valid[Math.floor(Math.random() * valid.length)];
+        }
+        // Place the AI's move
+        let row = c4Rows - 1;
+        while (row >= 0 && c4Board[row][chosenCol] !== 0) row--;
+        if (row < 0) return; // Should not happen
+        c4Board[row][chosenCol] = 2;
+        if (c4CheckWinner(row, chosenCol, 2)) {
+          c4StatusEl.textContent = "AI wins!";
+          c4Active = false;
+          c4RenderBoard();
+          return;
+        }
+        if (c4Board.flat().every((x) => x !== 0)) {
+          c4StatusEl.textContent = "It's a draw!";
+          c4Active = false;
+          c4RenderBoard();
+          return;
+        }
+        c4Current = 1;
+        c4StatusEl.textContent = "Your turn (Yellow)";
+        c4RenderBoard();
+      }
+
+      function c4CheckWinner(row, col, player) {
+        // Check all directions
+        function count(dx, dy) {
+          let r = row + dy,
+            c = col + dx,
+            n = 0;
+          while (
+            r >= 0 &&
+            r < c4Rows &&
+            c >= 0 &&
+            c < c4Cols &&
+            c4Board[r][c] === player
+          ) {
+            n++;
+            r += dy;
+            c += dx;
+          }
+          return n;
+        }
+        // Horizontal, vertical, diagonal /
+        return (
+          count(1, 0) + count(-1, 0) >= 3 ||
+          count(0, 1) + count(0, -1) >= 3 ||
+          count(1, 1) + count(-1, -1) >= 3 ||
+          count(1, -1) + count(-1, 1) >= 3
+        );
+      }
+
+      // Initial render
+      c4Reset();
+
+      // --- Higher or Lower Game ---
+      const hlStatusEl = document.getElementById("hl-status");
+      const hlYourCardsEl = document.getElementById("hl-your-cards");
+      const hlOpponentCardsEl = document.getElementById("hl-opponent-cards");
+      const hlGuessRowEl = document.getElementById("hl-guess-row");
+      const hlResetBtn = document.getElementById("hl-reset");
+      const HL_SUITS = ["♠", "♥", "♦", "♣"];
+      const HL_RANKS = [
+        "A",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "J",
+        "Q",
+        "K",
+      ];
+      let hlDeck = [];
+      let hlPlayerCards = [];
+      let hlOpponentCards = [];
+      let hlPlayerHearts = 3;
+      let hlAIHearts = 3;
+      let hlPlayed = [];
+      let hlGameActive = true;
+      let hlLastPlayedIdx = null;
+
+      function hlShuffleDeck() {
+        let deck = [];
+        for (let s of HL_SUITS) {
+          for (let r of HL_RANKS) {
+            deck.push({ rank: r, suit: s });
+          }
+        }
+        for (let i = deck.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [deck[i], deck[j]] = [deck[j], deck[i]];
+        }
+        return deck;
+      }
+
+      function hlCardValue(card) {
+        if (card.rank === "A") return 1;
+        if (card.rank === "J") return 11;
+        if (card.rank === "Q") return 12;
+        if (card.rank === "K") return 13;
+        return parseInt(card.rank);
+      }
+
+      function hlReset() {
+        hlPlayerHearts = 3;
+        hlAIHearts = 3;
+        hlGameActive = true;
+        hlSelectedCardIdx = null;
+        hlSelectedGuess = null;
+        hlDealCards();
+        hlStatusEl.textContent =
+          "Pick a card and guess if it's higher or lower than the AI's!";
+        hlRender();
+      }
+
+      function hlRender() {
+        // Life bars
+        const heart = (filled) => (filled ? "❤️" : "🤍");
+        document.getElementById("hl-player-life").innerHTML = Array(3)
+          .fill(0)
+          .map((_, i) => heart(i < hlPlayerHearts))
+          .join(" ");
+        document.getElementById("hl-ai-life").innerHTML = Array(3)
+          .fill(0)
+          .map((_, i) => heart(i < hlAIHearts))
+          .join(" ");
+
+        // Show your cards (left)
+        hlYourCardsEl.innerHTML =
+          '<div style="margin-bottom:2px;font-weight:bold;">Your Cards</div>' +
+          hlPlayerCards
+            .map((c, i) => {
+              let highlight = "";
+              if (hlSelectedCardIdx === i || hlLastPlayedIdx === i) {
+                highlight =
+                  "background:#ffd54f;color:#222;border:2px solid #ffb300;";
+              } else {
+                highlight =
+                  "background:#fff;color:#222;border:2px solid #ffd54f;";
+              }
+              // If played, disable button
+              if (hlLastPlayedIdx === i && !hlGameActive) {
+                return `<span style='margin:4px 2px;padding:12px 18px;font-size:1.05rem;border-radius:8px;display:flex;align-items:center;justify-content:center;min-width:56px;max-width:56px;height:40px;text-align:center;${highlight}'>${c.rank}${c.suit}</span>`;
+              }
+              // Disable all card buttons if a card is already selected
+              const disabled = hlSelectedCardIdx !== null ? "disabled" : "";
+              return `<button class='hl-card-btn' data-idx='${i}' ${disabled} style='margin:4px 2px;padding:12px 18px;font-size:1.05rem;border-radius:8px;display:flex;align-items:center;justify-content:center;min-width:56px;max-width:56px;height:40px;text-align:center;${highlight}cursor:pointer;'>${c.rank}${c.suit}</button>`;
+            })
+            .join("");
+        // Show AI's cards (right, same size)
+        hlOpponentCardsEl.innerHTML =
+          '<div style="margin-bottom:2px;font-weight:bold;">AI Cards</div>' +
+          hlOpponentCards
+            .map((c, i) =>
+              hlPlayed.includes(i)
+                ? `<span style='margin:4px 2px;padding:12px 18px;font-size:1.05rem;border-radius:8px;display:flex;align-items:center;justify-content:center;min-width:56px;max-width:56px;height:40px;text-align:center;border:2px solid #ffd54f;background:#fff;color:#222;'>${c.rank}${c.suit}</span>`
+                : `<span style='margin:4px 2px;padding:12px 18px;font-size:1.05rem;border-radius:8px;display:flex;align-items:center;justify-content:center;min-width:56px;max-width:56px;height:40px;text-align:center;border:2px solid #ffd54f;background:#fff;color:#222;'>🂠</span>`
+            )
+            .join("");
+        // GUESS BUTTONS (always rendered, but disabled after guess)
+        let guessButtons = "";
+        if (hlGameActive && hlPlayerCards.length > 0) {
+          const isResult = hlSelectedGuess !== null;
+          const higherSelected =
+            hlSelectedGuess === "higher" ? "#ffd54f" : "#fff";
+          const lowerSelected =
+            hlSelectedGuess === "lower" ? "#ffd54f" : "#fff";
+          const higherDisabled = isResult ? "disabled" : "";
+          const lowerDisabled = isResult ? "disabled" : "";
+          guessButtons = `
+          <button id='hl-guess-higher' ${higherDisabled} style='margin-bottom:8px;padding:6px 14px;font-size:0.98rem;border-radius:7px;border:none;background:${higherSelected};color:#222;font-weight:bold;cursor:pointer;display:block;width:100%;text-transform:uppercase;${
+            isResult ? "opacity:0.7;cursor:not-allowed;" : ""
+          }'>HIGHER</button>
+          <button id='hl-guess-lower' ${lowerDisabled} style='margin-top:8px;padding:6px 14px;font-size:0.98rem;border-radius:7px;border:none;background:${lowerSelected};color:#222;font-weight:bold;cursor:pointer;display:block;width:100%;text-transform:uppercase;${
+            isResult ? "opacity:0.7;cursor:not-allowed;" : ""
+          }'>LOWER</button>
+        `;
+        }
+        hlGuessRowEl.innerHTML = guessButtons;
+
+        // NEXT ROUND BUTTON (always visible, only enabled after a guess)
+        const nextRoundBtn = document.getElementById("hl-next-round");
+        if (hlSelectedGuess !== null) {
+          nextRoundBtn.style.opacity = "1";
+          nextRoundBtn.style.cursor = "pointer";
+          nextRoundBtn.disabled = false;
+        } else {
+          nextRoundBtn.style.opacity = "0.7";
+          nextRoundBtn.style.cursor = "not-allowed";
+          nextRoundBtn.disabled = true;
+        }
+      }
+
+      let hlSelectedCardIdx = null;
+      let hlSelectedGuess = null;
+      hlYourCardsEl.onclick = function (e) {
+        if (!hlGameActive) return;
+        if (hlSelectedCardIdx !== null) return; // Prevent further selection
+        const btn = e.target.closest(".hl-card-btn");
+        if (!btn) return;
+        hlSelectedCardIdx = parseInt(btn.getAttribute("data-idx"));
+        hlRender();
+      };
+
+      hlGuessRowEl.onclick = function (e) {
+        if (!hlGameActive) return;
+        if (hlSelectedCardIdx === null) return;
+        if (
+          e.target.id !== "hl-guess-higher" &&
+          e.target.id !== "hl-guess-lower"
+        )
+          return;
+        // Set guess selection
+        hlSelectedGuess =
+          e.target.id === "hl-guess-higher" ? "higher" : "lower";
+        hlRender();
+        // Wait a short moment for highlight, then play round
+        setTimeout(() => {
+          // Play round
+          const playerCard = hlPlayerCards[hlSelectedCardIdx];
+          // AI picks random card not played
+          let aiIdx = 0;
+          for (let i = 0; i < hlOpponentCards.length; i++) {
+            if (!hlPlayed.includes(i)) {
+              aiIdx = i;
+              break;
+            }
+          }
+          const aiCard = hlOpponentCards[aiIdx];
+          hlPlayed.push(aiIdx);
+          // Do not remove played card from your hand, just mark it as played
+          hlLastPlayedIdx = hlSelectedCardIdx;
+          // Determine outcome
+          const playerVal = hlCardValue(playerCard);
+          const aiVal = hlCardValue(aiCard);
+          let playerGuess = hlSelectedGuess;
+          let playerCorrect =
+            (playerGuess === "higher" && playerVal > aiVal) ||
+            (playerGuess === "lower" && playerVal < aiVal);
+          // AI guesses randomly
+          let aiGuess = Math.random() < 0.5 ? "higher" : "lower";
+          let aiCorrect =
+            (aiGuess === "higher" && aiVal > playerVal) ||
+            (aiGuess === "lower" && aiVal < playerVal);
+          let msg = `You played <b>${playerCard.rank}${playerCard.suit}</b>, AI played <b>${aiCard.rank}${aiCard.suit}</b>.<br>`;
+          msg += `AI guessed <b>${aiGuess.toUpperCase()}</b>.<br>`;
+          if (playerCorrect && aiCorrect) {
+            msg += "Both guessed correctly. Tie!";
+          } else if (playerCorrect) {
+            msg += "You guessed correctly! AI loses a heart.";
+            hlAIHearts--;
+          } else if (aiCorrect) {
+            msg += "AI guessed correctly! You lose a heart.";
+            hlPlayerHearts--;
+          } else {
+            msg += "No one guessed correctly.";
+          }
+          if (hlPlayerHearts <= 0 && hlAIHearts <= 0) {
+            msg += "<br>It's a tie game!";
+            hlGameActive = false;
+          } else if (hlPlayerHearts <= 0) {
+            msg += "<br>AI wins!";
+            hlGameActive = false;
+          } else if (hlAIHearts <= 0) {
+            msg += "<br>You win!";
+            hlGameActive = false;
+          }
+          // Don't reset selection until next round
+          hlStatusEl.innerHTML = msg;
+          hlRender();
+        }, 120);
+      };
+
+      // Next round button (outside hlGuessRowEl)
+      document.getElementById("hl-next-round").onclick = function () {
+        if (this.disabled) return;
+        hlSelectedCardIdx = null;
+        hlSelectedGuess = null;
+        hlLastPlayedIdx = null;
+        hlDealCards();
+        hlStatusEl.innerHTML =
+          "Pick a card and guess if it's higher or lower than the AI's!";
+        hlRender();
+      };
+
+      hlResetBtn.onclick = hlReset;
+      hlReset();
+
+      function hlDealCards() {
+        hlDeck = hlShuffleDeck();
+        hlPlayerCards = [];
+        hlOpponentCards = [];
+        hlPlayed = [];
+        hlLastPlayedIdx = null;
+        for (let i = 0; i < 3; i++) {
+          hlPlayerCards.push(hlDeck.pop());
+          hlOpponentCards.push(hlDeck.pop());
+        }
+      }
+
+      // --- GAMES MENU LOGIC ---
+      const gamesMenuBtn = document.getElementById("games-menu-btn");
+      const gamesSelector = document.getElementById("games-selector");
+      const battleshipContainer = document.getElementById(
+        "battleship-container"
+      );
+      const connect4Container = document.getElementById("connect4-container");
+      const higherlowerContainer = document.getElementById(
+        "higherlower-container"
+      );
+
+      // Show/hide the game selector menu
+      gamesMenuBtn.onclick = function () {
+        gamesSelector.style.display =
+          gamesSelector.style.display === "none" ? "block" : "none";
+      };
+
+      // Hide all game boards
+      function hideAllGames() {
+        battleshipContainer.style.display = "none";
+        connect4Container.style.display = "none";
+        higherlowerContainer.style.display = "none";
+      }
+
+      // Position the selected game board on the left
+      function showGameBoard(game) {
+        hideAllGames();
+        if (game === "battleship") {
+          battleshipContainer.style.display = "block";
+          battleshipContainer.style.position = "fixed";
+          battleshipContainer.style.right = "40px";
+          battleshipContainer.style.left = "";
+          battleshipContainer.style.bottom = "24px";
+        } else if (game === "connect4") {
+          connect4Container.style.display = "block";
+          connect4Container.style.position = "fixed";
+          connect4Container.style.right = "40px";
+          connect4Container.style.left = "";
+          connect4Container.style.bottom = "24px";
+        } else if (game === "higherlower") {
+          higherlowerContainer.style.display = "block";
+          higherlowerContainer.style.position = "fixed";
+          higherlowerContainer.style.right = "40px";
+          higherlowerContainer.style.left = "";
+          higherlowerContainer.style.bottom = "24px";
+        }
+      }
+
+      // Handle game selection
+      document.querySelectorAll(".game-select-btn").forEach((btn) => {
+        btn.onclick = function () {
+          const game = btn.getAttribute("data-game");
+          showGameBoard(game);
+          gamesSelector.style.display = "none";
+        };
+      });
+
+      // Optionally, hide all games on page load
+      hideAllGames();
+    </script>
+    <style>
+      #connect4-container {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: transparent;
+        border-radius: 12px;
+        padding: 16px 12px 12px 12px;
+        z-index: 100;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        color: #fff;
+        font-family: "Inter", sans-serif;
+        min-width: 320px;
+        max-width: 320px;
+        width: 320px;
+        text-align: center;
+      }
+      .connect4-cell {
+        width: 32px;
+        height: 32px;
+        background: #fff;
+        color: #222;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        cursor: pointer;
+        user-select: none;
+        transition: background 0.2s, color 0.2s;
+        border: 2px solid #ffd54f;
+      }
+      .connect4-cell.player1 {
+        background: #ffd54f;
+        color: #222;
+      }
+      .connect4-cell.player2 {
+        background: #1976d2;
+        color: #fff;
+      }
+      .connect4-cell:hover {
+        background: #f0f0f0;
+        color: #1976d2;
+      }
+      .connect4-title {
+        color: #ffd54f;
+        text-shadow: 1px 1px 4px #222;
+        font-family: "Inter", sans-serif;
+      }
+      #battleship-container {
+        position: fixed;
+        bottom: 24px;
+        left: 24px;
+        background: transparent;
+        border-radius: 12px;
+        padding: 12px 8px 8px 8px;
+        z-index: 100;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        color: #fff;
+        font-family: "Inter", sans-serif;
+        min-width: 220px;
+        text-align: center;
+      }
+      #battleship-player-board,
+      #battleship-ai-board {
+        display: grid;
+        grid-template-columns: repeat(4, 24px);
+        grid-template-rows: repeat(4, 24px);
+        gap: 3px;
+        margin-bottom: 8px;
+        justify-content: center;
+      }
+      .battleship-cell {
+        width: 24px;
+        height: 24px;
+        font-size: 1rem;
+      }
+      .battleship-hit {
+        background: #388e3c !important;
+        color: #fff;
+      }
+      .battleship-miss {
+        background: #b71c1c !important;
+        color: #fff;
+      }
+      .battleship-ship {
+        background: #1976d2 !important;
+        color: #fff;
+      }
+      .battleship-ship-revealed {
+        background: #ffd54f !important;
+        color: #222 !important;
+      }
+      .battleship-title {
+        color: #ffd54f;
+        text-shadow: 1px 1px 4px #222;
+        font-family: "Inter", sans-serif;
+      }
+    </style>
   </body>
 </html>
