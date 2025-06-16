@@ -8,6 +8,6 @@
 
 - To see the page, simply open the index.html file in your web browser. If it's on GitHub, you can access it via GitHub Pages if configured, or by browsing the file directly in the repository.
 
-  **👾 Games 👾**
+**👾 Games 👾**
   
 - Press the games button to have some fun!
