@@ -18,7 +18,7 @@
         min-height: 100vh;
         margin: 0;
         /* Dreamy, painterly cloud/sky background reminiscent of Miyazaki */
-        background-image: url("https://i.imgur.com/ccvIMGK.jpeg");
+        background-image: url("https://i.imgur.com/WmQYJP8.png");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -140,6 +140,166 @@
         text-transform: uppercase;
         text-align: center;
         margin-bottom: 8px;
+      }
+      .game-container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        right: auto !important;
+        bottom: auto !important;
+        transform: translate(-50%, -50%);
+        background: rgba(34, 34, 44, 0.98);
+        border-radius: 12px;
+        padding: 16px 12px 12px 12px;
+        z-index: 100;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        color: #fff;
+        min-width: 320px;
+        max-width: 340px;
+        width: 340px;
+        text-align: center;
+        display: none;
+      }
+
+      #connect4-container {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: transparent;
+        border-radius: 12px;
+        padding: 16px 12px 12px 12px;
+        z-index: 100;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        color: #fff;
+        font-family: "Inter", sans-serif;
+        min-width: 320px;
+        max-width: 320px;
+        width: 320px;
+        text-align: center;
+      }
+      .connect4-cell {
+        width: 32px;
+        height: 32px;
+        background: #fff;
+        color: #222;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        cursor: pointer;
+        user-select: none;
+        transition: background 0.2s, color 0.2s;
+        border: 2px solid #ffd54f;
+      }
+      .connect4-cell.player1 {
+        background: #ffd54f;
+        color: #222;
+      }
+      .connect4-cell.player2 {
+        background: #1976d2;
+        color: #fff;
+      }
+      .connect4-cell:hover {
+        background: #f0f0f0;
+        color: #1976d2;
+      }
+      .connect4-title {
+        color: #ffd54f;
+        text-shadow: 1px 1px 4px #222;
+        font-family: "Inter", sans-serif;
+      }
+      #battleship-container {
+        position: fixed;
+        bottom: 24px;
+        left: 24px;
+        background: transparent;
+        border-radius: 12px;
+        padding: 12px 8px 8px 8px;
+        z-index: 100;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        color: #fff;
+        font-family: "Inter", sans-serif;
+        min-width: 220px;
+        text-align: center;
+      }
+      #battleship-player-board,
+      #battleship-ai-board {
+        display: grid;
+        grid-template-columns: repeat(4, 24px);
+        grid-template-rows: repeat(4, 24px);
+        gap: 3px;
+        margin-bottom: 8px;
+        justify-content: center;
+      }
+      .battleship-cell {
+        width: 24px;
+        height: 24px;
+        font-size: 1rem;
+      }
+      .battleship-hit {
+        background: #388e3c !important;
+        color: #fff;
+      }
+      .battleship-miss {
+        background: #b71c1c !important;
+        color: #fff;
+      }
+      .battleship-ship {
+        background: #1976d2 !important;
+        color: #fff;
+      }
+      .battleship-ship-revealed {
+        background: #ffd54f !important;
+        color: #222 !important;
+      }
+      .battleship-title {
+        color: #ffd54f;
+        text-shadow: 1px 1px 4px #222;
+        font-family: "Inter", sans-serif;
+      }
+
+      .game-board-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* or 100% if inside another container */
+      }
+
+      /* GamePage specific styles */
+      .game-page-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Full viewport height */
+        width: 100vw; /* Full viewport width */
+      }
+
+      /* Game buttons styles */
+      .game-btn {
+        font-weight: bold;
+        padding: 12px 32px;
+        border: none;
+        border-radius: 8px;
+        color: #fff;
+        margin: 8px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        width: 200px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+      .battleship-btn {
+        background-color: #0074d9; /* Blue */
+      }
+      .connect4-btn {
+        background-color: #ff4136; /* Red */
+      }
+      .higherlower-btn {
+        background-color: #2ecc40; /* Green */
       }
     </style>
   </head>
@@ -469,7 +629,7 @@
           Select a Game:
         </div>
         <button
-          class="game-select-btn"
+          class="game-select-btn battleship-btn"
           data-game="battleship"
           style="
             display: block;
@@ -478,7 +638,7 @@
             padding: 8px 0;
             border-radius: 7px;
             border: none;
-            background: #ffd54f;
+            background: #0074d9; /* Blue */
             color: #222;
             font-weight: bold;
             cursor: pointer;
@@ -487,7 +647,7 @@
           Battleship
         </button>
         <button
-          class="game-select-btn"
+          class="game-select-btn connect4-btn"
           data-game="connect4"
           style="
             display: block;
@@ -496,7 +656,7 @@
             padding: 8px 0;
             border-radius: 7px;
             border: none;
-            background: #ffd54f;
+            background: #ff4136; /* Red */
             color: #222;
             font-weight: bold;
             cursor: pointer;
@@ -505,7 +665,7 @@
           Connect 4
         </button>
         <button
-          class="game-select-btn"
+          class="game-select-btn higherlower-btn"
           data-game="higherlower"
           style="
             display: block;
@@ -513,7 +673,7 @@
             padding: 8px 0;
             border-radius: 7px;
             border: none;
-            background: #ffd54f;
+            background: #2ecc40; /* Green */
             color: #222;
             font-weight: bold;
             cursor: pointer;
@@ -1164,27 +1324,29 @@
         higherlowerContainer.style.display = "none";
       }
 
-      // Position the selected game board on the left
+      // Position the selected game board on the center
       function showGameBoard(game) {
         hideAllGames();
+        // Helper to center any container and reset possible conflicting styles
+        function centerContainer(container) {
+          container.style.display = "block";
+          container.style.position = "fixed";
+          container.style.top = "50%";
+          container.style.left = "50%";
+          container.style.right = "32%";
+          container.style.bottom = "auto";
+          container.style.width = ""; // Reset width if it was set inline
+          container.style.transform = "translate(-50%, -50%)";
+          // Remove any margin that could push it off center
+          container.style.margin = "0";
+        }
+
         if (game === "battleship") {
-          battleshipContainer.style.display = "block";
-          battleshipContainer.style.position = "fixed";
-          battleshipContainer.style.right = "40px";
-          battleshipContainer.style.left = "";
-          battleshipContainer.style.bottom = "24px";
+          centerContainer(battleshipContainer);
         } else if (game === "connect4") {
-          connect4Container.style.display = "block";
-          connect4Container.style.position = "fixed";
-          connect4Container.style.right = "40px";
-          connect4Container.style.left = "";
-          connect4Container.style.bottom = "24px";
+          centerContainer(connect4Container);
         } else if (game === "higherlower") {
-          higherlowerContainer.style.display = "block";
-          higherlowerContainer.style.position = "fixed";
-          higherlowerContainer.style.right = "40px";
-          higherlowerContainer.style.left = "";
-          higherlowerContainer.style.bottom = "24px";
+          centerContainer(higherlowerContainer);
         }
       }
 
@@ -1200,104 +1362,5 @@
       // Optionally, hide all games on page load
       hideAllGames();
     </script>
-    <style>
-      #connect4-container {
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        background: transparent;
-        border-radius: 12px;
-        padding: 16px 12px 12px 12px;
-        z-index: 100;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        color: #fff;
-        font-family: "Inter", sans-serif;
-        min-width: 320px;
-        max-width: 320px;
-        width: 320px;
-        text-align: center;
-      }
-      .connect4-cell {
-        width: 32px;
-        height: 32px;
-        background: #fff;
-        color: #222;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        cursor: pointer;
-        user-select: none;
-        transition: background 0.2s, color 0.2s;
-        border: 2px solid #ffd54f;
-      }
-      .connect4-cell.player1 {
-        background: #ffd54f;
-        color: #222;
-      }
-      .connect4-cell.player2 {
-        background: #1976d2;
-        color: #fff;
-      }
-      .connect4-cell:hover {
-        background: #f0f0f0;
-        color: #1976d2;
-      }
-      .connect4-title {
-        color: #ffd54f;
-        text-shadow: 1px 1px 4px #222;
-        font-family: "Inter", sans-serif;
-      }
-      #battleship-container {
-        position: fixed;
-        bottom: 24px;
-        left: 24px;
-        background: transparent;
-        border-radius: 12px;
-        padding: 12px 8px 8px 8px;
-        z-index: 100;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        color: #fff;
-        font-family: "Inter", sans-serif;
-        min-width: 220px;
-        text-align: center;
-      }
-      #battleship-player-board,
-      #battleship-ai-board {
-        display: grid;
-        grid-template-columns: repeat(4, 24px);
-        grid-template-rows: repeat(4, 24px);
-        gap: 3px;
-        margin-bottom: 8px;
-        justify-content: center;
-      }
-      .battleship-cell {
-        width: 24px;
-        height: 24px;
-        font-size: 1rem;
-      }
-      .battleship-hit {
-        background: #388e3c !important;
-        color: #fff;
-      }
-      .battleship-miss {
-        background: #b71c1c !important;
-        color: #fff;
-      }
-      .battleship-ship {
-        background: #1976d2 !important;
-        color: #fff;
-      }
-      .battleship-ship-revealed {
-        background: #ffd54f !important;
-        color: #222 !important;
-      }
-      .battleship-title {
-        color: #ffd54f;
-        text-shadow: 1px 1px 4px #222;
-        font-family: "Inter", sans-serif;
-      }
-    </style>
   </body>
 </html>
